@@ -1,0 +1,52 @@
+{
+  "name": "DOMingo",
+  "version": "3.0.0",
+  "description": "A DOM centric rendering engine",
+  "main": "DOMingo.js",
+  "scripts": {
+    "test": "mocha --compilers js:babel/register"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/uniqname/DOMingo.git"
+  },
+  "keywords": [
+    "DOM",
+    "templates",
+    "templating",
+    "rendering",
+    "render"
+  ],
+  "author": "Cory Brown <oh.wise.man@gmail.com>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/uniqname/DOMingo/issues"
+  },
+  "homepage": "https://github.com/uniqname/DOMingo",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+
+    "chai": "^2.3.0",
+    "karma": "^0.12.31",
+    "mocha": "^2.2.4",
+
+    "babelify": "^6.0.2",
+    "browserify": "^9.0.8",
+    "glob": "^5.0.5",
+    "gulp-babel": "^5.1.0",
+    "gulp-jshint": "^1.10.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-size": "^1.2.1",
+    "gulp-sourcemaps": "^1.5.1",
+    "gulp-streamify": "0.0.5",
+    "gulp-uglify": "^1.2.0",
+    "gulp-util": "^3.0.4",
+    "merge-stream": "^0.1.7",
+    "plexer": "0.0.3",
+    "through2": "^0.6.5",
+    "uglify-js": "^2.4.20",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0",
+    "vinyl-transform": "^1.0.0"
+  }
+}

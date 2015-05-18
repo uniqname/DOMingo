@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>DOMingo Demo</title>
+        <style>
+            :unresolved {
+                opacity: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <template>
+            <style>
+                :host {
+                    display: block;
+                }
+                pre {
+                    padding: 1em;
+                    background: #eee;
+                }
+
+                .dark {
+                    background: #333;
+                    color: #ccc;
+                }
+            </style>
+            <code>
+                <pre class="{{theme}}">
+                    <content></content>
+                </pre>
+            </code>
+            Code is displayed in {{theme }} theme.
+        </template>
+
+        <code-sample>
+Here be some codez!
+        </code-sample>
+
+        <script src="../DOMingo.js"></script>
+        <script>
+            var begin = function () {
+                var template = document.querySelector('template').content,
+                    codeSampleProto = Object.create(HTMLElement.prototype);
+
+                codeSampleProto.createdCallback = function () {
+                    var shadow = this.createShadowRoot();
+                    this.render = DOMingo(template, shadow);
+                };
+
+                codeSampleProto.attachedCallback = function () {
+                    this.render({
+                        theme: 'dark'
+                    });
+
+                };
+
+                document.registerElement('code-sample', { prototype: codeSampleProto });
+            };
+            if (!Array.from) {
+                var s = document.createElement('script');
+                s.onload = function () {
+                    begin();
+                };
+                s.src = 'Array.from.polyfill.js';
+                document.head.appendChild(s);
+            } else {
+                begin();
+            }
+        </script>
+    </body>
+</html>

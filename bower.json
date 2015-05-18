@@ -1,0 +1,29 @@
+{
+  "name": "DOMingo",
+  "version": "3.0.0",
+  "homepage": "https://github.com/uniqname/DOMingo",
+  "authors": [
+    "Cory Brown <oh.wise.man@gmail.com>"
+  ],
+  "description": "A DOM centric template rendering library",
+  "main": "DOMingo.min.js",
+  "moduleType": [
+    "es6",
+    "globals"
+  ],
+  "keywords": [
+    "template",
+    "templating",
+    "render",
+    "rendering",
+    "DOM"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
