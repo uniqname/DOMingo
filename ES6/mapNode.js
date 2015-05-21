@@ -1,7 +1,7 @@
 import makeEntry from './makeEntry';
 
 export default function mapNode(map, node) {
-    if (node.nodeType === 3 || node.value) {
+    if (node.nodeType === 3 || node.nodeType === 8|| node.value) {
         let entry = makeEntry(node);
         if (entry !== null) { map.push(entry); }
         return map;

@@ -126,6 +126,14 @@ describe('DOMingo', () => {
             };
             assert.equal(mapNode(map, elNode).length, 1);
         });
+
+        it('should work for comment nodes', () => {
+            let commentNode = {
+                nodeType: 8,
+                textContent: '{{bindings}} in {{comments}}?'
+            };
+            assert.equal(mapNode(map, commentNode).length, 1);
+        });
     });
 
 });
