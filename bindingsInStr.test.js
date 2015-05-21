@@ -1,12 +1,4 @@
-var DOMingo = require('./DOMingo');
-// import DOMingo from './DOMingo';
-// import bindingsInStr from './bindingsInStr';
-// import getOrMakeBoundNode from './getOrMakeBoundNode';
-// import mapAttrBindings from './mapAttrBindings';
-// import mapAttrNameBindings from './mapAttrNameBindings';
-// import mapAttrValueBindings from './mapAttrValueBindings';
-// import mapChildren from './mapChildren';
-// import mapTextBindings from './mapTextBindings';
+import bindingsInStr from './bindingsInStr';
 
 describe('DOMingo', () => {
     describe('#bindingsInStr', () => {

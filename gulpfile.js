@@ -12,7 +12,8 @@ var gulp = require('gulp'),
     sourcemaps = require('gulp-sourcemaps'),
     jshint = require('gulp-jshint'),
     gutil = require('gulp-util'),
-    fs = require('fs');
+    fs = require('fs'),
+    karma = require('karma').server;
 
 gulp.task('lint', function() {
     gulp.src('./src/*.js')
@@ -21,34 +22,40 @@ gulp.task('lint', function() {
 });
 
 gulp.task('build', ['lint'], function () {
-    var bundler = browserify({ debug: true }),
-        b;
+    var bundler = browserify({ debug: true });
 
     bundler.transform(babelify);
-    bundler.add('./DOMingo/DOMingo.js');
+    bundler.add('./ES6/DOMingo.js');
 
-    b = bundler.bundle()
+    bundler.bundle()
         .on('error', gutil.log)
-        .pipe(source('./DOMingo/DOMingo.js'))
+        .pipe(source('./ES6/DOMingo.js'))
         .pipe(gulp.dest('../'))
         .pipe(streamify(uglify()))
         .pipe(rename('DOMingo.min.js'))
         .pipe(gulp.dest('./'));
-
 });
 
-gulp.task('build-tests', function () {
+gulp.task('build-tests', ['build'], function () {
     var bundler = browserify({ debug: true }),
         b;
 
     bundler.transform(babelify);
-    bundler.add('./DOMingo/DOMingo.test.js');
+    bundler.add('./ES6/DOMingo.test.js');
 
     b = bundler.bundle()
         .on('error', gutil.log)
-        .pipe(source('./DOMingo/DOMingo.test.js'))
+        .pipe(source('./ES6/DOMingo.test.js'))
         .pipe(rename('DOMingo-test.js'))
         .pipe(gulp.dest('./'));
 });
 
-gulp.task('default', ['build', 'build-tests']);
+gulp.task('unit-tests', ['lint', 'build-tests'], function (done) {
+    //the unit test task
+    return karma.start({
+        configFile: __dirname + '/karma.conf.js',
+        singleRun: true
+    }, done);
+});
+
+gulp.task('default', ['build', 'unit-tests']);
