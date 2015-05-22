@@ -127,6 +127,7 @@ describe('DOMingo', function () {
 
         it('should add an entry to the map for an elementNode that has attributes with bindings', function () {
             var elNode = {
+                nodeType: 1,
                 attributes: [{
                     name: 'title',
                     value: '{{attr}} binding'
@@ -137,6 +138,7 @@ describe('DOMingo', function () {
 
         it('should traverse child nodes looking for bindings', function () {
             var elNode = {
+                nodeType: 1,
                 childNodes: [{
                     nodeType: 3,
                     textContent: 'I {{still}} have your {{bindings}}'
@@ -176,8 +178,6 @@ var _interleave = require('./interleave');
 var _interleave2 = _interopRequireDefault(_interleave);
 
 function DOMingo(frag, shadowRoot) {
-    var bindPatter = arguments[2] === undefined ? /\{\{[^}}]*}}/g : arguments[2];
-
     var shadow = frag.cloneNode(true),
         map = [].concat(_toConsumableArray(shadow.childNodes)).reduce(_mapNode2['default'], []);
 
@@ -324,14 +324,14 @@ var _makeEntry = require('./makeEntry');
 var _makeEntry2 = _interopRequireDefault(_makeEntry);
 
 function mapNode(map, node) {
-    if (node.nodeType === 3 || node.nodeType === 8 || node.value) {
+    if (node.nodeType === 1) {
+        return [].slice.call(node.childNodes).concat([].slice.call(node.attributes)).reduce(mapNode, map);
+    } else {
         var entry = (0, _makeEntry2['default'])(node);
         if (entry !== null) {
             map.push(entry);
         }
         return map;
-    } else {
-        return [].slice.call(node.childNodes).concat([].slice.call(node.attributes)).reduce(mapNode, map);
     }
 }
 

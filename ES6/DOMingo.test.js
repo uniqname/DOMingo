@@ -107,6 +107,7 @@ describe('DOMingo', () => {
 
         it('should add an entry to the map for an elementNode that has attributes with bindings', () => {
             let elNode = {
+                nodeType: 1,
                 attributes: [
                     {
                         name: 'title',
@@ -119,6 +120,7 @@ describe('DOMingo', () => {
 
         it('should traverse child nodes looking for bindings', () => {
             let elNode = {
+                nodeType: 1,
                 childNodes: [{
                     nodeType: 3,
                     textContent: 'I {{still}} have your {{bindings}}'

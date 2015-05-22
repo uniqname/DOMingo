@@ -1,7 +1,7 @@
 import mapNode from './mapNode';
 import interleave from './interleave';
 
-export default function DOMingo(frag, shadowRoot, bindPatter=/\{\{[^}}]*}}/g) {
+export default function DOMingo(frag, shadowRoot) {
     let shadow = frag.cloneNode(true),
         map = [...shadow.childNodes].reduce(mapNode, []);
 
