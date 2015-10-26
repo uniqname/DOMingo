@@ -58,7 +58,7 @@ Assuming an HTML document similar to below:
     </figure>
 </template>
 
-<custom-element></custom-element>
+<wc-weather></wc-weather>
 ```
 
 DOMingo could be used like this:
