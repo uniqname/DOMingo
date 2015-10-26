@@ -6,7 +6,7 @@
   "jsnext:main": "src/DOMingo.js",
   "scripts": {
     "test": "eslint src/*.js; { for f in src/*-test.js; do babel-node $f; done } | tap-spec",
-    "build": "rollup -i src/DOMingo.js | babel > DOMingo.js && cat DOMingo.js | uglifyjs -emc > DOMingo.min.js"
+    "build": "rollup -i src/DOMingo.js > DOMingo.js && cat DOMingo.js | babel > DOMingo.common.js && rollup -i src/iife.js | babel | uglifyjs -emc > DOMingo.min.js"
   },
   "repository": {
     "type": "git",
@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/uniqname/DOMingo",
   "devDependencies": {
-    "babel": "^5.8.23",
+    "babel": "^5.8.29",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
     "jsdom": "^7.0.2",

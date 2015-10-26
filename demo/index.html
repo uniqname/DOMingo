@@ -44,7 +44,8 @@ Here be some codez!
 
                 codeSampleProto.createdCallback = function () {
                     var shadow = this.createShadowRoot();
-                    this.render = DOMingo(template, shadow);
+                    this.render = DOMingo['default'](template);
+                    shadow.appendChild(template);
                 };
 
                 codeSampleProto.attachedCallback = function () {
