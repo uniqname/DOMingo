@@ -100,7 +100,7 @@ function DOMingo(root) {
                 dataValues = node[symbols.dataPaths].map(function (dataPath) {
                 return deepPath(data, dataPath);
             }).map(function (val) {
-                return val || '';
+                return val == null ? '' : val;
             }),
                 newText = interleave(node[symbols.staticValues], dataValues).join('');
 

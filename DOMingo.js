@@ -72,7 +72,7 @@ function DOMingo(root, {
             const currText = node.nodeValue,
                 dataValues = node[symbols.dataPaths]
                     .map(dataPath => deepPath(data, dataPath))
-                    .map(val => val || ''),
+                    .map(val => val == null ? '' : val),
                 newText = interleave(node[symbols.staticValues], dataValues)
                     .join('');
 

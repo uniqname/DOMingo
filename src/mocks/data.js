@@ -3,7 +3,8 @@ export default {
     user: {
         username: 'Cory',
         profile_pic: 'img/me.jpg',
-        likes: ['pizza', 'hamburgers', 'diet Dr. Pepper', 'ice cream']
+        likes: ['pizza', 'hamburgers', 'diet Dr. Pepper', 'ice cream'],
+        falsy: 0
     },
     custom: {
         binding: 'Hey Ohhhh!'

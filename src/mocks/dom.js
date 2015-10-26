@@ -2,6 +2,7 @@ import jsdom from 'jsdom';
 
 const html = `<body>
     <h1>{{title}}</h1>
+    <h2>{{user.falsy}}</h2>
     <section>
         <p>Welcome {{ user.username }}</p>
         <img src="{{ user/profile_pic}}" />

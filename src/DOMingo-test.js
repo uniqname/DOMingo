@@ -15,6 +15,8 @@ tape('DOMingo', t => {
 
     t.equals(doc.querySelector('li').textContent, 'pizza', 'Updates DOM when data passed to render function');
 
+    t.equals(doc.querySelector('h2').textContent, '0', 'Falsy values are preserved.');
+
     const doc2 = dom().document.cloneNode(true),
         customRender = domingo(doc2.body, {
         delimiters: ['$:', ':$']
