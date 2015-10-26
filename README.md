@@ -1,34 +1,25 @@
 # DOMingo
-A small (4KB minified and 1KB gziped), DOM centric templating library particularly for rendering `<template>` content into a shadowRoot. Bindings can be added to either the textContent of an element or in the value of an attribute. When rendering, DOMingo will only update the parts of the render target -- usually a `shadowRoot` -- that have changed. This provides a number of benefits apart from performance. One major benefit is how well this works with Web Components. DOMingo's approach means that when a new render is performed, an `attributeChangedCallback` event is not triggered on attributes who's value has not changed. With rendering methods that treat templates as strings before dumping them into the DOM for rendering, the entire contents of the render target is destroyed before being replaced. This could break event listeners or node references attached to specific elements with the render target. This is unnecessary with DOMingo.
+A small (2KB minified and 830byte gziped), DOM centric templating library. DOMingo is particularly well suited for for rendering `<template>` content into a shadowRoot for Web Components. Bindings can be added to either the textContent of an element or in the value of an attribute. When rendering, DOMingo will only update the parts of the DOM that have changed. This provides a number of benefits apart from performance. One major benefit is how well this works with Web Components and Mutation Observers. DOMingo's approach means that when a new render is performed, neither an `attributeChangedCallback` nor a mutation event is not triggered on nodes who's value have not changed. With rendering methods that treat templates as strings before dumping them into the DOM for rendering, the entire contents of the render target is destroyed before being replaced. This could break event listeners or node references attached to specific elements with the render target. This is unnecessary with DOMingo.
 
 ##API
 
 ###Compile stage
-####`DOMingo(templateFragment, renderTarget[, { openDelim='{{', closeDelim='}}' }])`
-DOMingo exports and exposes a global `DOMingo` function which accepts two arguments with an optional `options` third argument. This function acts as a "compile" stage for a template and target. This function creates a mapping between the template fragment and a fragment that will be inserted into the render target. It is this stage that allows DOMingo to update only the differences from one render to the next. This function returns another function that is used to update the render target's contents.
+####`DOMingo(target [, { delimiters = ['{{', '}}'] }])`
+DOMingo provides a `DOMingo` function which accepts a single DOM node or fragment that is acts as the target for rendering, and an optional `options` argument. The DOMingo function acts as a "compile" stage for the target and allows DOMingo to intelligently update only the nodes that change when a new render occurs. The DOMingo function returns another function used in the [render stage](#render-stage) that is used to update the target's contents.
 
 _templateFragment_
 
-The templateFragment is a DOMFragment that contains the text bindings. This is most commonly obtained by retrieving the `contents` of a `<template>` element, but any DOMFragment can be used.
+The target is a DOM node or fragment that contains the text bindings. This is most commonly obtained by retrieving the `contents` of a `<template>` element, but any element node or fragment can be used.
 
 ```
 <template>...</template>
 ...
-templateFragment = document.querySelector('template').contents;
-```
-
-_renderTarget_
-
-The renderTarget is the container for where the rendered DOM should go. This is most often a `shadowRoot` but may be any DOM element or fragment.
-
-```
-customElement = document.querySelector('custom-element');
-renderTarget = customElement.createShadowRoot();
+target = document.querySelector('template').contents;
 ```
 
 _options_
 
-The options object is an optional argument that currently understands two properties: openDelim and closeDelim. These properties represent strings that identify the opening and closing delimeters for data binding. The default values are '{{' and '}}' respectively. There should be no need to include an options object unless you want to override the data binding delimeters.
+The options object is an optional argument that currently understands one property: delimiters, which is a two-array of open and close delimiters for data binding. The default values are '{{' and '}}' respectively. There should be no need to include an options object unless you want to override the data binding delimiters.
 
 ```
 var options = {
@@ -36,16 +27,16 @@ var options = {
         closeDelim: '%>'
     };
 
-DOMingo(templateFragment, renderTarget, options);
+DOMingo(target, options);
 
 ```
 
 ###Render stage
 ####`render(data)`
-The `DOMingo` function returns a function that is used to render the changes into the render target. This function accepts just one argument, the data to be applied to the template.
+The `DOMingo` function returns a function that is used to render the changes into the target. This function accepts just one argument, the data to be applied to the template.
 
 ```
-var render = DOMingo(templateFragment, renderTarget);
+var render = DOMingo(target);
 render(data);
 ```
 
@@ -74,9 +65,9 @@ DOMingo could be used like this:
 ```
 import DOMingo from 'DOMingo';
 
-let templateFragment = document.querySelector('template').content,
-    renderTarget = document.querySelector('custo-element'),
-    targetRoot = renderTarget.createShadowRoot(),
+let target = document.querySelector('template').content,
+    customEl = document.querySelector('custom-element'),
+    shadow = customEl.createShadowRoot(),
     data = {
         forecast: {
             label: 'partly cloudy',
@@ -88,7 +79,9 @@ let templateFragment = document.querySelector('template').content,
             }
         }
     },
-    render = DOMingo(templateFragment, targetRoot);
+    render = DOMingo(target);
+
+customEl.shadowRoot.appendChild(target);
 
 render(data);
 ```
