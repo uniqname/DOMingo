@@ -1,6 +1,6 @@
 {
   "name": "domingo",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "A DOM centric rendering engine",
   "main": "DOMingo.js",
   "jsnext:main": "src/DOMingo.js",
