@@ -3,69 +3,115 @@
     <head>
         <title>DOMingo Demo</title>
         <style>
+            body {
+                font-family: sans-serif;
+            }
             :unresolved {
                 opacity: 0;
+            }
+            [contenteditable] {
+                padding: 1em 2em;
+                white-space: pre;
+                background: #eee;
+                border-radius: .25em;
+                border: .25em solid transparent;
+                color: #333;
+                font-family: monospace;
+                font-size: 1.4em;
+            }
+            [contenteditable]:focus {
+                outline: none;
+                border-color: #999;
+                background-color: #fff;
+            }
+            button {
+                border-radius: .25em;
+                border: none;
+                padding: .25em;
+                font-size: 1.4em;
+                background: hsla(210, 50%, 50%, 1);
+                color: #fff;
+                margin: 1em 0;
+                cursor: pointer;
             }
         </style>
     </head>
     <body>
         <template>
-            <style>
-                :host {
-                    display: block;
-                }
-                pre {
-                    padding: 1em;
-                    background: #eee;
-                }
-
-                .dark {
-                    background: #333;
-                    color: #ccc;
-                }
-            </style>
-            <code>
-                <pre class="{{theme}}">
-                    <content></content>
-                </pre>
-            </code>
-            Code is displayed in {{theme }} theme.
+            <figure>
+                <style>
+                    p {
+                        margin: 0;
+                    }
+                    .label {
+                        font-weight: bold;
+                    }
+                    .high, .low {
+                        display: inline-block;
+                    }
+                    .high {
+                        font-size: 4em;
+                    }
+                    .low { font-size: 1em; }
+                </style>
+                <figcaption>
+                    <p><span class="label">{{forecast.label}}</span> with a <span class="rain-chance">{{forecast.rain-chance}}%</span> chance of rain.</p>
+                    <p class="high">{{forecast.temperatures.high}} {{forecast.temperatures.units}}</p>
+                    <p class="low">{{forecast.temperatures.low}} {{forecast.temperatures.units}}</p>.
+                </figcaption>
+            </figure>
         </template>
 
-        <code-sample>
-Here be some codez!
-        </code-sample>
+        <wc-weather></wc-weather>
 
-        <script src="../DOMingo.js"></script>
+        <h3>Try changing the data and hitting the render button</h3>
+        <div contenteditable>
+{
+    "forecast": {
+        "label": "partly cloudy",
+        "rain-chance": 50,
+        "temperatures": {
+            "high": 75,
+            "low": 58,
+            "units": "F"
+        }
+    }
+}
+        </div>
+        <button type="button" name="rerender">Rerender</button>
+
+        <script src="../DOMingo.min.js"></script>
         <script>
-            var begin = function () {
-                var template = document.querySelector('template').content,
-                    codeSampleProto = Object.create(HTMLElement.prototype);
+        var templateFragment = document.querySelector('template').content,
+            target = document.importNode(templateFragment, true),
+            weatherEl = document.querySelector('wc-weather'),
+            shadow = weatherEl.createShadowRoot(),
+            data = {
+                forecast: {
+                    label: 'partly cloudy',
+                    'rain-chance': 50,
+                    temperatures: {
+                        high: 75,
+                        low: 58,
+                        units: 'F'
+                    }
+                }
+            },
+            render = DOMingo(target);
 
-                codeSampleProto.createdCallback = function () {
-                    var shadow = this.createShadowRoot();
-                    this.render = DOMingo(template, shadow);
-                };
+        weatherEl.shadowRoot.appendChild(target);
 
-                codeSampleProto.attachedCallback = function () {
-                    this.render({
-                        theme: 'dark'
-                    });
+        render(data);
 
-                };
+        document.querySelector('[name="rerender"]').addEventListener('click', function (e) {
+            var dataEl = document.querySelector('[contenteditable]');
 
-                document.registerElement('code-sample', { prototype: codeSampleProto });
-            };
-            if (!Array.from) {
-                var s = document.createElement('script');
-                s.onload = function () {
-                    begin();
-                };
-                s.src = 'Array.from.polyfill.js';
-                document.head.appendChild(s);
-            } else {
-                begin();
+            try {
+                render(JSON.parse(dataEl.textContent));
+            } catch(e) {
+                console.error('malformed JSON for data');
             }
+        });
         </script>
     </body>
 </html>

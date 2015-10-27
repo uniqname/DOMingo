@@ -3,8 +3,10 @@
   "version": "3.0.3",
   "description": "A DOM centric rendering engine",
   "main": "DOMingo.js",
+  "jsnext:main": "src/DOMingo.js",
   "scripts": {
-    "test": "mocha --compilers js:babel/register"
+    "test": "eslint src/*.js; { for f in src/*-test.js; do babel-node $f; done } | tap-spec",
+    "build": "rollup -i src/DOMingo.js > DOMingo.js && cat DOMingo.js | babel > DOMingo.common.js && rollup -i src/iife.js | babel | uglifyjs -emc > DOMingo.min.js"
   },
   "repository": {
     "type": "git",
@@ -22,35 +24,18 @@
   "bugs": {
     "url": "https://github.com/uniqname/DOMingo/issues"
   },
+  "browserify": {
+    "transform": "babel"
+  },
   "homepage": "https://github.com/uniqname/DOMingo",
   "devDependencies": {
+    "babel": "^5.8.29",
     "babelify": "^6.0.2",
     "browserify": "^9.0.8",
-    "chai": "^2.3.0",
-    "glob": "^5.0.5",
-    "gulp": "^3.8.11",
-    "gulp-babel": "^5.1.0",
-    "gulp-jshint": "^1.10.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-size": "^1.2.1",
-    "gulp-sourcemaps": "^1.5.1",
-    "gulp-streamify": "0.0.5",
-    "gulp-uglify": "^1.2.0",
-    "gulp-util": "^3.0.4",
-    "karma": "^0.12.31",
-    "karma-chai": "^0.1.0",
-    "karma-chrome-launcher": "^0.1.12",
-    "karma-mocha": "^0.1.10",
-    "karma-phantomjs-launcher": "^0.1.4",
-    "karma-spec-reporter": "0.0.19",
-    "merge-stream": "^0.1.7",
-    "mocha": "^2.2.4",
-    "phantomjs": "^1.9.16",
-    "plexer": "0.0.3",
-    "through2": "^0.6.5",
-    "uglify-js": "^2.4.20",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "vinyl-transform": "^1.0.0"
+    "jsdom": "^7.0.2",
+    "rollup": "^0.20.0",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.1",
+    "uglify-js": "^2.4.20"
   }
 }
