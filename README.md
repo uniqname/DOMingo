@@ -1,10 +1,10 @@
 # DOMingo
 A small (2KB minified and 830byte gziped), DOM centric templating library. DOMingo is particularly well suited for for rendering `<template>` content into a shadowRoot for Web Components. Bindings can be added to either the textContent of an element or in the value of an attribute. When rendering, DOMingo will only update the parts of the DOM that have changed. This provides a number of benefits apart from performance. One major benefit is how well this works with Web Components and Mutation Observers. DOMingo's approach means that when a new render is performed, neither an `attributeChangedCallback` nor a mutation event is not triggered on nodes who's value have not changed. With rendering methods that treat templates as strings before dumping them into the DOM for rendering, the entire contents of the render target is destroyed before being replaced. This could break event listeners or node references attached to specific elements with the render target. This is unnecessary with DOMingo.
 
-##API
+## API
 
-###Compile stage
-####`DOMingo(target [, { delimiters = ['{{', '}}'] }])`
+### Compile stage
+#### `DOMingo(target [, { delimiters = ['{{', '}}'] }])`
 DOMingo provides a `DOMingo` function which accepts a single DOM node or fragment that is acts as the target for rendering, and an optional `options` argument. The DOMingo function acts as a "compile" stage for the target and allows DOMingo to intelligently update only the nodes that change when a new render occurs. The DOMingo function returns another function used in the [render stage](#render-stage) that is used to update the target's contents.
 
 _templateFragment_
@@ -31,8 +31,8 @@ DOMingo(target, options);
 
 ```
 
-###Render stage
-####`render(data)`
+### Render stage
+#### `render(data)`
 The `DOMingo` function returns a function that is used to render the changes into the target. This function accepts just one argument, the data to be applied to the template.
 
 ```
@@ -40,7 +40,7 @@ var render = DOMingo(target);
 render(data);
 ```
 
-##Putting it all together
+## Putting it all together
 
 Assuming an HTML document similar to below:
 ```
